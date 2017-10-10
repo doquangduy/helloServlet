@@ -1,6 +1,9 @@
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 public class HelloWorld extends HttpServlet {
     public void init() {
@@ -8,13 +11,15 @@ public class HelloWorld extends HttpServlet {
     }
 
     public void doGet (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+        List<String> lines = Files.readAllLines(Paths.get("index.html", "utf-8"));
         response.setContentType("text/html");
 
-        PrintWriter out = response.getWriter();
-        out.write("<h1>Hello World</h1>");
-        out.write("<form method=\"post\" action=\"/HelloWorld\">" +
-                    "<input type=\"text\" name=\"name\">" +
-                    "<input type=\"submit\">");
+        for(String line:lines)
+        {
+            out.write(line);
+        }
+
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
